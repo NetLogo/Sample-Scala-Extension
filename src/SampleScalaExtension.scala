@@ -10,21 +10,21 @@ class SampleScalaExtension extends DefaultClassManager {
 }
 
 class IntegerList extends DefaultReporter {
-  override def getSyntax = reporterSyntax(Array(TYPE_NUMBER), TYPE_LIST)
-
+  override def getSyntax = reporterSyntax(Array(NumberType), ListType)
   def report(args: Array[Argument], context: Context): AnyRef = {
-    val n = try {args(0).getIntValue}
+    val n = try args(0).getIntValue
     catch {
-      case e: LogoException => throw new ExtensionException(e.getMessage)
+      case e: LogoException =>
+        throw new ExtensionException(e.getMessage)
     }
-    if (n < 0) throw new ExtensionException("input must be positive")
-    
+    if (n < 0)
+      throw new ExtensionException("input must be positive")
     (0 until n).toLogoList
   }
 }
 
 class MyList extends DefaultReporter {
-  override def getSyntax = reporterSyntax(Array(TYPE_WILDCARD | TYPE_REPEATABLE), TYPE_LIST, 2)
+  override def getSyntax = reporterSyntax(Array(WildcardType | RepeatableType), ListType, 2)
   def report(args: Array[Argument], context: Context) =
     args.map(_.get).toLogoList
 }
