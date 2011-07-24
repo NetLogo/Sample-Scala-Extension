@@ -10,7 +10,7 @@ class SampleScalaExtension extends DefaultClassManager {
 }
 
 class IntegerList extends DefaultReporter {
-  override def getSyntax = reporterSyntax(Array(NumberType), ListType)
+  override def getSyntax = reporterSyntax(Array(TYPE_NUMBER), TYPE_LIST)
   def report(args: Array[Argument], context: Context): AnyRef = {
     val n = try args(0).getIntValue
     catch {
@@ -24,7 +24,7 @@ class IntegerList extends DefaultReporter {
 }
 
 class MyList extends DefaultReporter {
-  override def getSyntax = reporterSyntax(Array(WildcardType | RepeatableType), ListType, 2)
+  override def getSyntax = reporterSyntax(Array(TYPE_WILDCARD | TYPE_REPEATABLE), TYPE_LIST, 2)
   def report(args: Array[Argument], context: Context) =
     args.map(_.get).toLogoList
 }
