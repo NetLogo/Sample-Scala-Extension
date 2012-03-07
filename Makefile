@@ -6,7 +6,7 @@ ifeq ($(origin SCALA_HOME), undefined)
   SCALA_HOME=../..
 endif
 
-ifeq ($(shell uname -o),Cygwin)
+ifneq (,$(findstring CYGWIN,$(shell uname -s)))
   COLON=\;
   SCALA_HOME := `cygpath -up "$(SCALA_HOME)"`
 else
