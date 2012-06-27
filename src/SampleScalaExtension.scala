@@ -4,13 +4,14 @@ import org.nlogo.api.ScalaConversions._
 
 class SampleScalaExtension extends DefaultClassManager {
   def load(manager: PrimitiveManager) {
-    manager.addPrimitive("first-n-integers", new IntegerList)
-    manager.addPrimitive("my-list", new MyList)
+    manager.addPrimitive("first-n-integers", IntegerList)
+    manager.addPrimitive("my-list", MyList)
   }
 }
 
-class IntegerList extends DefaultReporter {
-  override def getSyntax = reporterSyntax(Array(NumberType), ListType)
+object IntegerList extends DefaultReporter {
+  override def getSyntax =
+    reporterSyntax(Array(NumberType), ListType)
   def report(args: Array[Argument], context: Context): AnyRef = {
     val n = try args(0).getIntValue
     catch {
@@ -23,8 +24,9 @@ class IntegerList extends DefaultReporter {
   }
 }
 
-class MyList extends DefaultReporter {
-  override def getSyntax = reporterSyntax(Array(WildcardType | RepeatableType), ListType, 2)
+object MyList extends DefaultReporter {
+  override def getSyntax =
+    reporterSyntax(Array(WildcardType | RepeatableType), ListType, 2)
   def report(args: Array[Argument], context: Context) =
     args.map(_.get).toLogoList
 }
