@@ -4,11 +4,9 @@ This is a very small example NetLogo extension, written in Scala.
 
 ## Building
 
-Use the NETLOGO environment variable to tell the Makefile which NetLogo.jar to compile against.  For example:
+Run the `bin/sbt` script to build the extension.
 
-    NETLOGO=/Applications/NetLogo\\\ 5.0 make
-
-If compilation succeeds, `sample-scala.jar` will be created.
+If the build succeeds, `sample-scala.jar` is created.
 
 ## Terms of Use
 

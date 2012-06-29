@@ -1,4 +1,6 @@
-/classes
+/bin/sbt-launch-*.jar
+/project
+/target
 /sample-scala.jar
 /sample-scala.jar.pack.gz
 /sample-scala.zip
