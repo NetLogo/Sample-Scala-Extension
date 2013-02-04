@@ -47,8 +47,8 @@ object CreateRedTurtles extends api.DefaultCommand with nvm.CustomAssembled {
     val eContext = context.asInstanceOf[nvm.ExtensionContext]
     val nvmContext = eContext.nvmContext
     val agents =
-      new agent.ArrayAgentSet(
-        api.AgentKind.Turtle, n, false, world)
+      agent.ArrayAgentSet.withCapacity(
+        api.AgentKind.Turtle, world, n)
     for(_ <- 0 until n) {
       val turtle = world.createTurtle(world.turtles)
       turtle.colorDoubleUnchecked(red)
