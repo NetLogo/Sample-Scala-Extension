@@ -46,17 +46,17 @@ object CreateRedTurtles extends api.DefaultCommand with nvm.CustomAssembled {
     val world = context.getAgent.world.asInstanceOf[agent.World]
     val eContext = context.asInstanceOf[nvm.ExtensionContext]
     val nvmContext = eContext.nvmContext
-    val agents =
-      agent.ArrayAgentSet.withCapacity(api.AgentKind.Turtle, n)
+    val builder =
+      new agent.AgentSetBuilder(api.AgentKind.Turtle, n)
     for(_ <- 0 until n) {
       val turtle = world.createTurtle(world.turtles)
       turtle.colorDoubleUnchecked(red)
-      agents.add(turtle)
+      builder.add(turtle)
       eContext.workspace.joinForeverButtons(turtle)
     }
     // if the optional command block wasn't supplied, then there's not
     // really any point in calling this, but it won't bomb, either
-    nvmContext.runExclusiveJob(agents, nvmContext.ip + 1)
+    nvmContext.runExclusiveJob(builder.build(), nvmContext.ip + 1)
     // prim._extern will take care of leaving nvm.Context ip in the right place
   }
   def assemble(a: nvm.AssemblerAssistant) {
