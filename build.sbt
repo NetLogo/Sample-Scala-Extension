@@ -1,13 +1,13 @@
-scalaVersion := "2.10.0"
+scalaVersion := "2.10.1"
 
 scalaSource in Compile <<= baseDirectory(_ / "src")
 
 scalacOptions ++= Seq("-deprecation", "-unchecked", "-feature", "-Xlint", "-Xfatal-warnings",
-                      "-encoding", "us-ascii")
+                      "-encoding", "us-ascii", "-target:jvm-1.7")
 
 libraryDependencies +=
-  "org.nlogo" % "NetLogoHeadless" % "5.x-9fdce9bf" from
-    "http://ccl.northwestern.edu/devel/NetLogoHeadless-9fdce9bf.jar"
+  "org.nlogo" % "NetLogoHeadless" % "5.x-de4980d4" from
+    "http://ccl.northwestern.edu/devel/NetLogoHeadless-de4980d4.jar"
 
 artifactName := { (_, _, _) => "sample-scala.jar" }
 
@@ -20,15 +20,11 @@ packageOptions := Seq(
 packageBin in Compile <<= (packageBin in Compile, baseDirectory, streams) map {
   (jar, base, s) =>
     IO.copyFile(jar, base / "sample-scala.jar")
-    Process("pack200 --modification-time=latest --effort=9 --strip-debug " +
-            "--no-keep-file-order --unknown-attribute=strip " +
-            "sample-scala.jar.pack.gz sample-scala.jar").!!
     if(Process("git diff --quiet --exit-code HEAD").! == 0) {
       Process("git archive -o sample-scala.zip --prefix=sample-scala/ HEAD").!!
       IO.createDirectory(base / "sample-scala")
       IO.copyFile(base / "sample-scala.jar", base / "sample-scala" / "sample-scala.jar")
-      IO.copyFile(base / "sample-scala.jar.pack.gz", base / "sample-scala" / "sample-scala.jar.pack.gz")
-      Process("zip sample-scala.zip sample-scala/sample-scala.jar sample-scala/sample-scala.jar.pack.gz").!!
+      Process("zip sample-scala.zip sample-scala/sample-scala.jar").!!
       IO.delete(base / "sample-scala")
     }
     else {
@@ -40,6 +36,5 @@ packageBin in Compile <<= (packageBin in Compile, baseDirectory, streams) map {
 
 cleanFiles <++= baseDirectory { base =>
   Seq(base / "sample-scala.jar",
-      base / "sample-scala.jar.pack.gz",
       base / "sample-scala.zip") }
 
