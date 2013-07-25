@@ -40,7 +40,7 @@ object CreateRedTurtles extends api.DefaultCommand with nvm.CustomAssembled {
   // only box this once
   private val red = Double.box(15)
   def perform(args: Array[api.Argument], context: api.Context) {
-    // the api package have what we need, so we'll often
+    // the api package doesn't have what we need, so we'll often
     // be dropping down to the agent and nvm packages
     val n = args(0).getIntValue
     val world = context.getAgent.world.asInstanceOf[agent.World]
