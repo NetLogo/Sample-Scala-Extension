@@ -33,3 +33,25 @@ create-red-turtles-with-commands
   O> crt 5 sample-scala:create-red-turtles 10 [ set size 2 ] crt 5
   count turtles => 20
   count turtles with [size = 2] => 10
+
+runresult
+  extensions [sample-scala]
+  O> crt 5
+  O> set glob1 task [count turtles]
+  runresult glob1 => 5
+  sample-scala:runresult glob1 => 5
+
+runresult-error-handling
+  extensions [sample-scala]
+  O> set glob1 task [pxcor]
+  runresult glob1 => ERROR the observer can't access a patch variable without specifying which patch
+
+runresult-of
+  extensions [sample-scala]
+  O> set glob1 task [pxcor * pycor]
+  sample-scala:runresult-of patch 3 5 glob1 => 15
+
+runresult-of-error-handling
+  extensions [sample-scala]
+  O> set glob1 task [xcor]
+  sample-scala:runresult-of patch 0 0 glob1 => ERROR A patch can't access a turtle variable without specifying which turtle.

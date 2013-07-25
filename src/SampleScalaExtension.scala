@@ -7,6 +7,8 @@ class SampleScalaExtension extends api.DefaultClassManager {
     manager.addPrimitive("first-n-integers", IntegerList)
     manager.addPrimitive("my-list", MyList)
     manager.addPrimitive("create-red-turtles", CreateRedTurtles)
+    manager.addPrimitive("runresult", Runresult)
+    manager.addPrimitive("runresult-of", RunresultOf)
   }
 }
 
@@ -63,5 +65,35 @@ object CreateRedTurtles extends api.DefaultCommand with nvm.CustomAssembled {
   def assemble(a: nvm.AssemblerAssistant) {
     a.block()
     a.done()
+  }
+}
+
+// the calling agent runs the task
+object Runresult extends api.DefaultReporter {
+  override def getSyntax =
+    reporterSyntax(Array(ReporterTaskType), WildcardType)
+  def report(args: Array[api.Argument], context: api.Context) =
+    args(0).getReporterTask.report(context, Array())
+}
+
+// the calling agent has some other agent run the task
+object RunresultOf extends api.DefaultReporter {
+  override def getSyntax =
+    reporterSyntax(Array(AgentType, ReporterTaskType), WildcardType)
+  def report(args: Array[api.Argument], context: api.Context) = {
+    // the api package doesn't have what we need, so we'll often
+    // be dropping down to the agent and nvm packages
+    val nvmContext = context.asInstanceOf[nvm.ExtensionContext].nvmContext
+    val inputAgent = args(0).getAgent.asInstanceOf[agent.Agent]
+    val task = args(1).getReporterTask.asInstanceOf[nvm.ReporterTask]
+    val callingAgent = nvmContext.agent
+    // how robust is this, really? I don't know without writing a lot of test cases.  sometimes it's
+    // easy to write down plausible-looking engine code like this but then you find out it only
+    // works in the simplest cases. - ST 7/25/13
+    // it would probably be more correct to swap out context.myself, too, so that if the task
+    // uses `myself` it would refer to callingAgent and not to callingAgent's caller - ST 7/25/13
+    nvmContext.agent = inputAgent
+    try task.report(nvmContext, Array[AnyRef]())
+    finally nvmContext.agent = callingAgent
   }
 }
