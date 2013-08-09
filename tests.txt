@@ -17,10 +17,10 @@ create-red-turtles-correct-syntax
 
 create-red-turtles-incorrect-syntax
   extensions [sample-scala]
-  O> sample-scala:create-red-turtles => COMPILER ERROR:SAMPLE-SCALA:CREATE-RED-TURTLES expected 1 input, a number and a command block (optional).
-  O> sample-scala:create-red-turtles [ ] [ ] => COMPILER ERROR:Expected a number here, rather than a list or block.
-  O> sample-scala:create-red-turtles 10 [ ] [ ] => COMPILER ERROR:Expected command.
-  O> sample-scala:create-red-turtles 10 [ sprout 1 ] => COMPILER ERROR:You can't use SPROUT in a turtle context, because SPROUT is patch-only.
+  O> sample-scala:create-red-turtles => COMPILER ERROR SAMPLE-SCALA:CREATE-RED-TURTLES expected 1 input, a number and a command block (optional).
+  O> sample-scala:create-red-turtles [ ] [ ] => COMPILER ERROR Expected a number here, rather than a list or block.
+  O> sample-scala:create-red-turtles 10 [ ] [ ] => COMPILER ERROR Expected command.
+  O> sample-scala:create-red-turtles 10 [ sprout 1 ] => COMPILER ERROR You can't use SPROUT in a turtle context, because SPROUT is patch-only.
 
 create-red-turtles-turtles-are-in-fact-red-as-advertised
   extensions [sample-scala]
