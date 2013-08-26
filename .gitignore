@@ -1,5 +1,3 @@
-/bin/sbt-launch-*.jar
-/project
-/target
+target/
 /sample-scala.jar
 /sample-scala.zip
