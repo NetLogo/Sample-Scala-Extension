@@ -1,6 +1,7 @@
-import org.nlogo.{ agent, api, nvm }
-import api.Syntax._
-import api.ScalaConversions._  // implicits
+import
+  org.nlogo.{ core, api, agent, nvm },
+    core.Syntax._,
+    api.ScalaConversions._  // implicits
 
 class SampleScalaExtension extends api.DefaultClassManager {
   def load(manager: api.PrimitiveManager) {
@@ -47,7 +48,7 @@ object CreateRedTurtles extends api.DefaultCommand with nvm.CustomAssembled {
     val eContext = context.asInstanceOf[nvm.ExtensionContext]
     val nvmContext = eContext.nvmContext
     val builder =
-      new agent.AgentSetBuilder(api.AgentKind.Turtle, n)
+      new agent.AgentSetBuilder(core.AgentKind.Turtle, n)
     for(_ <- 0 until n) {
       val turtle = world.createTurtle(world.turtles)
       turtle.colorDoubleUnchecked(red)
