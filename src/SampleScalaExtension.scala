@@ -13,7 +13,7 @@ class SampleScalaExtension extends api.DefaultClassManager {
 
 object IntegerList extends api.DefaultReporter {
   override def getSyntax =
-    reporterSyntax(Array(NumberType), ListType)
+    reporterSyntax(right = List(NumberType), ret = ListType)
   def report(args: Array[api.Argument], context: api.Context): AnyRef = {
     val n = try args(0).getIntValue
     catch {
@@ -28,16 +28,16 @@ object IntegerList extends api.DefaultReporter {
 
 object MyList extends api.DefaultReporter {
   override def getSyntax =
-    reporterSyntax(Array(WildcardType | RepeatableType), ListType, 2)
+    reporterSyntax(right = List(WildcardType | RepeatableType),
+      ret = ListType, defaultOption = Some(2))
   def report(args: Array[api.Argument], context: api.Context) =
     args.map(_.get).toLogoList
 }
 
 object CreateRedTurtles extends api.DefaultCommand with nvm.CustomAssembled {
   override def getSyntax =
-    commandSyntax(Array(NumberType, CommandBlockType | OptionalType))
-  // the command itself is observer-only. inside the block is turtle code.
-  override def getAgentClassString = "O:-T--"
+    commandSyntax(List(NumberType, CommandBlockType | OptionalType),
+      agentClassString = "O---", blockAgentClassString = "-T--")
   // only box this once
   private val red = Double.box(15)
   def perform(args: Array[api.Argument], context: api.Context) {
