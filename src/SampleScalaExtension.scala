@@ -11,7 +11,7 @@ class SampleScalaExtension extends api.DefaultClassManager {
   }
 }
 
-object IntegerList extends api.DefaultReporter {
+object IntegerList extends api.Reporter {
   override def getSyntax =
     reporterSyntax(right = List(NumberType), ret = ListType)
   def report(args: Array[api.Argument], context: api.Context): AnyRef = {
@@ -26,7 +26,7 @@ object IntegerList extends api.DefaultReporter {
   }
 }
 
-object MyList extends api.DefaultReporter {
+object MyList extends api.Reporter {
   override def getSyntax =
     reporterSyntax(right = List(WildcardType | RepeatableType),
       ret = ListType, defaultOption = Some(2))
@@ -34,7 +34,7 @@ object MyList extends api.DefaultReporter {
     args.map(_.get).toLogoList
 }
 
-object CreateRedTurtles extends api.DefaultCommand with nvm.CustomAssembled {
+object CreateRedTurtles extends api.Command with nvm.CustomAssembled {
   override def getSyntax =
     commandSyntax(List(NumberType, CommandBlockType | OptionalType),
       agentClassString = "O---", blockAgentClassString = "-T--")
