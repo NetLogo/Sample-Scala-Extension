@@ -37,7 +37,7 @@ object MyList extends api.Reporter {
 object CreateRedTurtles extends api.Command with nvm.CustomAssembled {
   override def getSyntax =
     commandSyntax(List(NumberType, CommandBlockType | OptionalType),
-      agentClassString = "O---", blockAgentClassString = "-T--")
+      agentClassString = "O---", blockAgentClassString = Some("-T--"))
   // only box this once
   private val red = Double.box(15)
   def perform(args: Array[api.Argument], context: api.Context) {
