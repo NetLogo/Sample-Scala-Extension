@@ -6,7 +6,7 @@ URL='http://repo.typesafe.com/typesafe/ivy-releases/org.scala-sbt/sbt-launch/0.1
 if [ ! -f $LAUNCH ] ; then
   echo "downloading" $URL
   mkdir -p $HOME/.sbt
-  curl -s -S -f $URL -o $LAUNCH || exit
+  curl -s -S -L -f $URL -o $LAUNCH || exit
 fi
 
 java \
