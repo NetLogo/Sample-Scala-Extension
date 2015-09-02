@@ -1,45 +1,46 @@
-scalaVersion := "2.9.2"
+scalaVersion := "2.11.7"
+
+enablePlugins(org.nlogo.build.NetLogoExtension)
 
 scalaSource in Compile <<= baseDirectory(_ / "src")
 
-scalacOptions ++= Seq("-deprecation", "-unchecked", "-Xfatal-warnings",
-                      "-encoding", "us-ascii")
+scalacOptions ++= Seq("-deprecation", "-unchecked", "-Xfatal-warnings", "-encoding", "us-ascii")
 
-libraryDependencies +=
-  "org.nlogo" % "NetLogo" % "5.0.1" from
-    "http://ccl.northwestern.edu/netlogo/5.0.1/NetLogo.jar"
+javacOptions ++= Seq("-Xlint:deprecation")
 
-artifactName := { (_, _, _) => "sample-scala.jar" }
+netLogoExtName      := "sample-scala"
 
-packageOptions := Seq(
-  Package.ManifestAttributes(
-    ("Extension-Name", "sample-scala"),
-    ("Class-Manager", "SampleScalaExtension"),
-    ("NetLogo-Extension-API-Version", "5.0")))
+netLogoClassManager := "SampleScalaExtension"
 
-packageBin in Compile <<= (packageBin in Compile, baseDirectory, streams) map {
-  (jar, base, s) =>
-    IO.copyFile(jar, base / "sample-scala.jar")
-    Process("pack200 --modification-time=latest --effort=9 --strip-debug " +
-            "--no-keep-file-order --unknown-attribute=strip " +
-            "sample-scala.jar.pack.gz sample-scala.jar").!!
-    if(Process("git diff --quiet --exit-code HEAD").! == 0) {
-      Process("git archive -o sample-scala.zip --prefix=sample-scala/ HEAD").!!
-      IO.createDirectory(base / "sample-scala")
-      IO.copyFile(base / "sample-scala.jar", base / "sample-scala" / "sample-scala.jar")
-      IO.copyFile(base / "sample-scala.jar.pack.gz", base / "sample-scala" / "sample-scala.jar.pack.gz")
-      Process("zip sample-scala.zip sample-scala/sample-scala.jar sample-scala/sample-scala.jar.pack.gz").!!
-      IO.delete(base / "sample-scala")
-    }
-    else {
-      s.log.warn("working tree not clean; no zip archive made")
-      IO.delete(base / "sample-scala.zip")
-    }
-    jar
+netLogoZipSources   := false
+
+// The remainder of this file is for options specific to bundled netlogo extensions
+// if copying this extension to build your own, you need nothing past line 14 to build
+// sample-scala.zip
+val netLogoJarOrDependency =
+  Option(System.getProperty("netlogo.jar.url"))
+    .orElse(Some("http://ccl.northwestern.edu/netlogo/5.3.0/NetLogo.jar"))
+    .map { url =>
+      import java.io.File
+      import java.net.URI
+      if (url.startsWith("file:"))
+        (Seq(new File(new URI(url))), Seq())
+      else
+        (Seq(), Seq("org.nlogo" % "NetLogo" % "5.3.0" from url))
+    }.get
+
+unmanagedJars in Compile ++= netLogoJarOrDependency._1
+
+libraryDependencies      ++= netLogoJarOrDependency._2
+
+packageBin in Compile := {
+  val jar = (packageBin in Compile).value
+  val sampleScalaZip = baseDirectory.value / "sample-scala.zip"
+  if (sampleScalaZip.exists) {
+    IO.unzip(sampleScalaZip, baseDirectory.value)
+    for (jar <- (baseDirectory.value / "sample-scala" ** "*.jar").get)
+      IO.copyFile(jar, baseDirectory.value / jar.getName)
+    IO.delete(baseDirectory.value / "sample-scala")
   }
-
-cleanFiles <++= baseDirectory { base =>
-  Seq(base / "sample-scala.jar",
-      base / "sample-scala.jar.pack.gz",
-      base / "sample-scala.zip") }
-
+  jar
+}
