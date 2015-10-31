@@ -1,6 +1,7 @@
 import org.nlogo.{ agent, api, nvm }
 import api.Syntax._
 import api.ScalaConversions._  // implicits
+import org.nlogo.core.AgentKind
 
 class SampleScalaExtension extends api.DefaultClassManager {
   def load(manager: api.PrimitiveManager) {
@@ -34,11 +35,13 @@ object MyList extends api.DefaultReporter {
 
 object CreateRedTurtles extends api.DefaultCommand with nvm.CustomAssembled {
   override def getSyntax =
-    commandSyntax(Array(NumberType, CommandBlockType | OptionalType))
-  // the command itself is observer-only. inside the block is turtle code.
-  override def getAgentClassString = "O:-T--"
+    commandSyntax(right = Array(NumberType, CommandBlockType | OptionalType),
+      agentClassString = "O---",
+      blockAgentClassString = "-T--")
+
   // only box this once
   private val red = Double.box(15)
+
   def perform(args: Array[api.Argument], context: api.Context) {
     // the api package have what we need, so we'll often
     // be dropping down to the agent and nvm packages
@@ -48,7 +51,7 @@ object CreateRedTurtles extends api.DefaultCommand with nvm.CustomAssembled {
     val nvmContext = eContext.nvmContext
     val agents =
       new agent.ArrayAgentSet(
-        classOf[agent.Turtle], n, false, world)
+        AgentKind.Turtle, n, false, world)
     for(_ <- 0 until n) {
       val turtle = world.createTurtle(world.turtles)
       turtle.colorDoubleUnchecked(red)
@@ -60,6 +63,7 @@ object CreateRedTurtles extends api.DefaultCommand with nvm.CustomAssembled {
     nvmContext.runExclusiveJob(agents, nvmContext.ip + 1)
     // prim._extern will take care of leaving nvm.Context ip in the right place
   }
+
   def assemble(a: nvm.AssemblerAssistant) {
     a.block()
     a.done()
