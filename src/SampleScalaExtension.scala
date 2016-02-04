@@ -1,5 +1,5 @@
-import org.nlogo.{ agent, api, nvm }
-import api.Syntax._
+import org.nlogo.{ agent, api, core, nvm }
+import core.Syntax._
 import api.ScalaConversions._  // implicits
 import org.nlogo.core.AgentKind
 
@@ -11,9 +11,9 @@ class SampleScalaExtension extends api.DefaultClassManager {
   }
 }
 
-object IntegerList extends api.DefaultReporter {
+object IntegerList extends api.Reporter {
   override def getSyntax =
-    reporterSyntax(Array(NumberType), ListType)
+    reporterSyntax(right = List(NumberType), ret = ListType)
   def report(args: Array[api.Argument], context: api.Context): AnyRef = {
     val n = try args(0).getIntValue
     catch {
@@ -26,18 +26,18 @@ object IntegerList extends api.DefaultReporter {
   }
 }
 
-object MyList extends api.DefaultReporter {
+object MyList extends api.Reporter {
   override def getSyntax =
-    reporterSyntax(Array(WildcardType | RepeatableType), ListType, 2)
+    reporterSyntax(right = List(WildcardType | RepeatableType), ret = ListType, defaultOption = Some(3))
   def report(args: Array[api.Argument], context: api.Context) =
     args.map(_.get).toLogoList
 }
 
-object CreateRedTurtles extends api.DefaultCommand with nvm.CustomAssembled {
+object CreateRedTurtles extends api.Command with nvm.CustomAssembled {
   override def getSyntax =
-    commandSyntax(right = Array(NumberType, CommandBlockType | OptionalType),
+    commandSyntax(right = List(NumberType, CommandBlockType | OptionalType),
       agentClassString = "O---",
-      blockAgentClassString = "-T--")
+      blockAgentClassString = Some("-T--"))
 
   // only box this once
   private val red = Double.box(15)
@@ -50,8 +50,7 @@ object CreateRedTurtles extends api.DefaultCommand with nvm.CustomAssembled {
     val eContext = context.asInstanceOf[nvm.ExtensionContext]
     val nvmContext = eContext.nvmContext
     val agents =
-      new agent.ArrayAgentSet(
-        AgentKind.Turtle, n, false, world)
+      new agent.AgentSetBuilder(AgentKind.Turtle, n)
     for(_ <- 0 until n) {
       val turtle = world.createTurtle(world.turtles)
       turtle.colorDoubleUnchecked(red)
@@ -60,7 +59,7 @@ object CreateRedTurtles extends api.DefaultCommand with nvm.CustomAssembled {
     }
     // if the optional command block wasn't supplied, then there's not
     // really any point in calling this, but it won't bomb, either
-    nvmContext.runExclusiveJob(agents, nvmContext.ip + 1)
+    nvmContext.runExclusiveJob(agents.build(), nvmContext.ip + 1)
     // prim._extern will take care of leaving nvm.Context ip in the right place
   }
 
