@@ -6,7 +6,7 @@ netLogoClassManager := "SampleScalaExtension"
 
 netLogoZipSources   := false
 
-scalaVersion           := "2.11.7"
+scalaVersion           := "2.12.0"
 
 scalaSource in Compile := baseDirectory.value / "src"
 
