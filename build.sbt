@@ -18,4 +18,4 @@ scalacOptions          ++= Seq("-deprecation", "-unchecked", "-Xfatal-warnings",
 netLogoTarget :=
   org.nlogo.build.NetLogoExtension.directoryTarget(baseDirectory.value)
 
-netLogoVersion := "6.0.1-M1"
+netLogoVersion := "6.0.2-M1"
