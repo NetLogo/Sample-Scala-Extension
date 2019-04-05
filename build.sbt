@@ -6,7 +6,7 @@ netLogoClassManager := "SampleScalaExtension"
 
 netLogoZipSources   := false
 
-version := "1.1.0"
+version := "1.1.1"
 
 scalaVersion           := "2.12.8"
 
@@ -20,4 +20,4 @@ scalacOptions          ++= Seq("-deprecation", "-unchecked", "-Xfatal-warnings",
 netLogoTarget :=
   org.nlogo.build.NetLogoExtension.directoryTarget(baseDirectory.value)
 
-netLogoVersion := "6.0.4-9328ba6"
+netLogoVersion := "6.1.0-RC1"
