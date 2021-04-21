@@ -1,6 +1,3 @@
-resolvers += Resolver.url(
-  "NetLogo-JVM",
-  url("https://dl.bintray.com/content/netlogo/NetLogo-JVM"))(
-    Resolver.ivyStylePatterns)
+resolvers += "netlogo-extension-plugin" at "https://dl.cloudsmith.io/public/netlogo/netlogo-extension-plugin/maven/"
 
 addSbtPlugin("org.nlogo" % "netlogo-extension-plugin" % "3.2")
