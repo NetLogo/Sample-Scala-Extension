@@ -1,3 +1,5 @@
+package org.nlogo.extensions.samplescala
+
 import org.nlogo.{ agent, api, core, nvm }
 import core.Syntax._
 import api.ScalaConversions._  // implicits

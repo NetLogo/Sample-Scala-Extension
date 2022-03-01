@@ -4,9 +4,11 @@ This is a very small example NetLogo extension, written in Scala.
 
 ## Building
 
-Run the `bin/sbt` script to build the extension.
+Make sure you have `sbt` installed on your system, then run `sbt package` to package the sample extension jar file.  If the build succeeds, `samplescala.jar` is created.
 
-If the build succeeds, `sample-scala.jar` is created.
+Run `sbt test` to run the NetLogo language tests from the `tests.txt` file.
+
+Run `sbt packageZip` to create a zip file with all necessary files for publishing the extension.
 
 ## Terms of Use
 
