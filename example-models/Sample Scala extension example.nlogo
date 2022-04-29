@@ -1,9 +1,9 @@
-extensions [ samplescala ]
+extensions [ sample-scala ]
 
 to test
-  show samplescala:first-n-integers 11
-  (samplescala:create-red-turtles 100 [ right random 100 forward random 100 ])
-  show (samplescala:my-list 10 20 30 40 60)
+  show sample-scala:first-n-integers 11
+  (sample-scala:create-red-turtles 100 [ right random 100 forward random 100 ])
+  show (sample-scala:my-list 10 20 30 40 60)
 end
 @#$#@#$#@
 GRAPHICS-WINDOW
