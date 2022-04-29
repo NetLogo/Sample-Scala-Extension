@@ -10,7 +10,7 @@ scalaSource in Compile := baseDirectory.value / "src" / "main"
 scalaSource in Test    := baseDirectory.value / "src" / "test"
 scalacOptions          ++= Seq("-deprecation", "-unchecked", "-Xfatal-warnings", "-encoding", "us-ascii")
 
-netLogoExtName      := "samplescala"
+netLogoExtName      := "sample-scala"
 netLogoClassManager := "org.nlogo.extensions.samplescala.SampleScalaExtension"
 netLogoVersion      := "6.2.2"
 netLogoZipExtras   ++= Seq(baseDirectory.value / "README.md", baseDirectory.value / "example-models")
