@@ -6,7 +6,7 @@ import api.ScalaConversions._  // implicits
 import org.nlogo.core.AgentKind
 
 class SampleScalaExtension extends api.DefaultClassManager {
-  def load(manager: api.PrimitiveManager) {
+  def load(manager: api.PrimitiveManager): Unit = {
     manager.addPrimitive("first-n-integers", IntegerList)
     manager.addPrimitive("my-list", MyList)
     manager.addPrimitive("create-red-turtles", CreateRedTurtles)
@@ -44,7 +44,7 @@ object CreateRedTurtles extends api.Command with nvm.CustomAssembled {
   // only box this once
   private val red = Double.box(15)
 
-  def perform(args: Array[api.Argument], context: api.Context) {
+  def perform(args: Array[api.Argument], context: api.Context): Unit = {
     // the api package have what we need, so we'll often
     // be dropping down to the agent and nvm packages
     val n = args(0).getIntValue
@@ -65,7 +65,7 @@ object CreateRedTurtles extends api.Command with nvm.CustomAssembled {
     // prim._extern will take care of leaving nvm.Context ip in the right place
   }
 
-  def assemble(a: nvm.AssemblerAssistant) {
+  def assemble(a: nvm.AssemblerAssistant): Unit = {
     a.block()
     a.done()
   }
