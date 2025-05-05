@@ -12,5 +12,5 @@ scalacOptions        ++= Seq("-deprecation", "-unchecked", "-Xfatal-warnings", "
 
 netLogoExtName      := "sample-scala"
 netLogoClassManager := "org.nlogo.extensions.samplescala.SampleScalaExtension"
-netLogoVersion      := "6.3.0"
+netLogoVersion      := "7.0.0-internal1-df97144"
 netLogoZipExtras   ++= Seq(baseDirectory.value / "README.md", baseDirectory.value / "example-models")
