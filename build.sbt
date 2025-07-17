@@ -3,7 +3,7 @@ import org.nlogo.build.NetLogoExtension
 enablePlugins(NetLogoExtension)
 
 name       := "sample-scala"
-version    := "1.1.1"
+version    := "1.2.0"
 isSnapshot := true
 
 scalaVersion          := "3.7.0"
