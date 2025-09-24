@@ -14,3 +14,5 @@ scalacOptions        ++= Seq("-deprecation", "-unchecked", "-Xfatal-warnings", "
 netLogoClassManager := "org.nlogo.extensions.samplescala.SampleScalaExtension"
 netLogoVersion      := "7.0.0-424b50b"
 netLogoZipExtras   ++= Seq(baseDirectory.value / "README.md", baseDirectory.value / "example-models")
+
+resolvers += "jitpack" at "https://jitpack.io"
