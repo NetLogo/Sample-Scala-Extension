@@ -12,7 +12,5 @@ Test / scalaSource    := baseDirectory.value / "src" / "test"
 scalacOptions        ++= Seq("-deprecation", "-unchecked", "-Xfatal-warnings", "-encoding", "us-ascii", "-release", "11")
 
 netLogoClassManager := "org.nlogo.extensions.samplescala.SampleScalaExtension"
-netLogoVersion      := "7.0.0-424b50b"
+netLogoVersion      := "7.0.0-2486d1e"
 netLogoZipExtras   ++= Seq(baseDirectory.value / "README.md", baseDirectory.value / "example-models")
-
-resolvers += "jitpack" at "https://jitpack.io"
